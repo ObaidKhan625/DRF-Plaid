@@ -69,6 +69,13 @@ where django is running
 ngrok http 8000
 ```
 
+# Best Practices followed
+
+* Item_id, access_token stored in DB, never exposed to the client
+* Item model created and associated with webhook so additional API calls are reduced
+* Task results stored in DB to view Success/Failure status
+* Large tasks moved to celery
+
 # Screenshots
 
 ## Signup
