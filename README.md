@@ -69,6 +69,14 @@ where django is running
 ngrok http 8000
 ```
 
+### Set Plaid Credentials
+Setup a Plaid account and add your credentials in ```Task/tasks.py```
+```bash
+PLAID_CLIENT_ID = "your_client_id"
+PLAID_SECRET = "your_secret"
+PLAID_ENV = "sandbox"
+```
+
 # Best Practices followed
 
 * Item_id, access_token stored in DB, never exposed to the client
