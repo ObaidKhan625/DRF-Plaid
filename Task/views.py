@@ -77,4 +77,8 @@ def updateTransactionsWebhook(request):
             new_transactions = request_data.get('new_transactions')            
             response = fetch_transactions.delay(request_data['item_id'], new_transactions).get()
     response['new_transactions'] = new_transactions
+    # Writing to sample.json
+    print(response)
+    with open("sample.json", "w") as outfile:
+        json.dump(response, outfile)
     return JsonResponse(response)
