@@ -3,10 +3,9 @@ from celery import shared_task
 from plaid import Client
 import datetime
 
-# from .config import PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV
-PLAID_CLIENT_ID = '6373e3838186650013202d02'
-PLAID_SECRET = '18a24ec488686aa1cd2a0801258bd8'
-PLAID_ENV = 'sandbox'
+PLAID_CLIENT_ID = "your_client_id"
+PLAID_SECRET = "your_secret"
+PLAID_ENV = "sandbox"
 
 def get_plaid_client():
     return Client(client_id=PLAID_CLIENT_ID, secret=PLAID_SECRET, environment=PLAID_ENV)
