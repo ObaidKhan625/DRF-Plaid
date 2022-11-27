@@ -1,20 +1,32 @@
-# Django-Plaid
+# DRF-Plaid
+
+**Tech Stack**
+* Python
+* Django
+* Django REST
+* SQLite
+* Redis
+* Celery
+
+## Routes
 
 ```bash
-POST /register/ => Create a new user, requires {email, password}
+POST register/ => Create a new user, requires {username, password}
 
-POST /login/ => Login, returns a token on success, requires {email, password}
+POST login/ => Login, returns a login_token on success, requires {username, password}
 
-POST /logout/ => Logout, requires {token}
+POST logout/ => Logout, requires {login_token}
 
-GET /token-exchange/ => Returns access_token in exchange of public token, requires {email, public_token}
+POST exchange-token/ => Returns access_token in exchange of public_token, requires {login_token, public_token}
 
-GET /get-transactions/ => Returns transactions within a given time period, requires {email, start_date, end_date}
+POST get-accounts/ => Returns user accounts, requires {login_token}
 
-GET /get-accounts/ => Returns user account, requires {email}
+POST get-transactions/ => Returns transactions within a given time period, requires {login_token, start_date, end_date}
 
-POST /update-transaction/ => Exposed webhook for fetching transactions, requires {email, transaction_id}
+POST update-transactions-webhook/ => Endpoint that acts as a webhook when new transaction is made using Plaid
 ```
+
+All the requests are POST requests and the variables in the {} above need to be passed in the body in JSON format.
 
 ## Setup
 
@@ -25,13 +37,13 @@ pip install -r requirements.txt
 ```
 ### Install and start Redis Server
 
-I have used Redis server for the celery broker, it uses default URL 'redis://127.0.0.1:6379'
+I have used Redis server for the celery broker, it uses default URL 'redis://127.0.0.1:6379'.
+Also I have used SQLite to store the celery results.
 
 ```bash
 Celery Broker -> Redis
 Celery Backend -> SQLite
 ```
-
 
 ### Migrations
 ```bash
@@ -41,12 +53,20 @@ python manage.py migrate
 
 ### Start Celert Worker
 ```bash
-celery -A PlaidDjango  worker -l info
+celery -A PlaidDjango  --pool=solo worker -l info
 ```
 
 ### Run Django Server
 ```bash
 python manage.py runserver
+```
+
+### Ngrok
+In order to give a localhost endpoint to Plaid as a public webhook, I have used ngrok.
+It can be downloaded from https://ngrok.com/, after installation, ngrok needs to be mapped to the localhost port
+where django is running
+```bash
+ngrok http 8000
 ```
 
 # Screenshots
